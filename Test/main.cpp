@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include "enttecdmxusb.h"
+#include "dmxserver.h" // Remplacez "dmxserver.h" par le nom de votre fichier d'en-tête de classe serveur
+
 
 #define DMXDEVICE "/dev/ttyUSB0"
 #define NUM_CHANNELS 512 // Nombre de canaux DMX
@@ -27,42 +29,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    EnttecDMXUSB interfaceDMX(DMX_USB_PRO, DMXDEVICE);
-    string configurationDMX;
+        DMXServer server; // Remplacez "DMXServer" par le nom de votre classe serveur
 
-    if(interfaceDMX.IsAvailable())
-    {
-        configurationDMX = interfaceDMX.GetConfiguration();
-        cout << "Interface " << interfaceDMX.GetNomInterface() << " détectée" << endl << configurationDMX << endl;
-
-        double angle = 0.0; // Angle pour les transitions de couleur
-
-        interfaceDMX.ResetCanauxDMX();
-        interfaceDMX.SendDMX();
-
-        while(1)
-        {
-            // Calcul des valeurs RVB en fonction de l'angle
-            int r = static_cast<int>(127.0 + 127.0 * sin(angle));
-            int g = static_cast<int>(127.0 + 127.0 * sin(angle + 2.0 * M_PI / 3.0));
-            int b = static_cast<int>(127.0 + 127.0 * sin(angle + 4.0 * M_PI / 3.0));
-
-            // Régler les canaux DMX pour la couleur calculée
-            setRGBColor(interfaceDMX, r, g, b);
-
-            // Incrémenter l'angle pour les transitions de couleur
-            angle += TRANSITION_SPEED;
-
-            // Limiter l'angle entre 0 et 2*PI
-            if (angle > 2.0 * M_PI)
-                angle -= 2.0 * M_PI;
-
-            interfaceDMX.SendDMX();
-            usleep(1000); // Délai entre chaque mise à jour des LED (en microsecondes)
-        }
-    }
-    else
-        cout << "Interface non détectée !" << endl;
-
-    return a.exec();
+        return a.exec();
 }
