@@ -1,5 +1,5 @@
 QT -= gui
-QT += network
+QT += network websockets core sql
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -12,7 +12,8 @@ SOURCES += \
         enttecdmxusb.cpp \
         main.cpp \
         rs232.cpp \
-    dmxserver.cpp
+    dmxserver.cpp \
+    constructtrame.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -23,4 +24,5 @@ HEADERS += \
     enttecdmxusb.h \
     errcode.h \
     rs232.h \
-    dmxserver.h
+    dmxserver.h \
+    constructtrame.h
